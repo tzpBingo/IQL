@@ -33,7 +33,7 @@ public class QuartzJobFactory implements Job{
 		String script = job.getScript();
 		String exceStatus = count>0 ? "retry "+count : "running";
 		if(count > retry && retry!=0){
-			logger.error("retry {} times job {} over.", count, jobKey);
+			logger.error("retry {} times job {} over.", count-1, jobKey);
 			JobExecutionException e = new JobExecutionException("Retries job "+jobKey+" exceeded");
 			throw e;
 		}
@@ -51,7 +51,7 @@ public class QuartzJobFactory implements Job{
 			if(retry==0){
 				e.printStackTrace();
 			}else{
-				if(count < retry){
+				if(count <= retry){
 					try {
 						Thread.sleep(retryInterval*1000);
 					} catch (InterruptedException ie) {
